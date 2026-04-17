@@ -1,0 +1,11 @@
+{
+  "id": "MyMod",
+  "name": "My Mod",
+  "author": "Author",
+  "description": "A Slay the Spire 2 mod",
+  "version": "v0.1.0",
+  "has_pck": true,
+  "has_dll": true,
+  "dependencies": ["BaseLib"],
+  "affects_gameplay": true
+}
