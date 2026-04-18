@@ -68,4 +68,4 @@ dotnet publish -c Release
 ## CI/CD
 
 - **CI** (`ci.yml`): Triggered on pull requests to `master`. Builds the mod to verify it compiles.
-- **Build** (`build.yml`): Triggered on pushes to `master`. Bumps the minor version in `MyMod.json`, builds and publishes the mod, then creates a GitHub Release with a zipped artifact.
+- **Build** (`build.yml`): Triggered on pushes to `main`. Bumps the minor version in `MyMod.json`, builds and publishes the mod, then creates a GitHub Release with a zipped artifact.
