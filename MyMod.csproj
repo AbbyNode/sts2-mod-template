@@ -16,7 +16,7 @@
         <NoWarn>$(NoWarn);MSB3270</NoWarn> 
     </PropertyGroup>
 
-    <ItemGroup Condition="Exists('$(Sts2DataDir)')" >
+    <ItemGroup Condition="Exists('$(Sts2DataDir)/sts2.dll')" >
         <Reference Include="0Harmony">
             <HintPath>$(Sts2DataDir)/0Harmony.dll</HintPath>
             <Private>false</Private>
@@ -25,6 +25,11 @@
             <HintPath>$(Sts2DataDir)/sts2.dll</HintPath>
             <Private>false</Private>
         </Reference>
+    </ItemGroup>
+
+    <ItemGroup Condition="!Exists('$(Sts2DataDir)/sts2.dll')">
+        <!-- Use reference-only stubs when the game is not installed (e.g. CI) -->
+        <PackageReference Include="BSchneppe.Sts2.ReferenceAssemblies" Version="0.99.1" PrivateAssets="All"/>
     </ItemGroup>
     
     <ItemGroup Condition="false"> <!--Allows access to originally private/protected members but may (unlikely to) cause errors.-->
@@ -62,7 +67,7 @@
     <Target Name="CheckDependencyPaths" >
         <Error
                 Text=" Slay the Spire 2 data not found at path '$(Sts2DataDir)'"
-                Condition="'$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)')" />
+                Condition="('$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)')) And '$(CI)' != 'true'" />
     </Target>
 
     <Target Name="CopyToModsFolderOnBuild" AfterTargets="PostBuildEvent">
