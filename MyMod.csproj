@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.5.1" InitialTargets="CheckDependencyPaths">
+<Project Sdk="Godot.NET.Sdk/4.5.1">
     <Import Project=".\Sts2PathDiscovery.props"/>
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
@@ -59,7 +59,7 @@
         <None Include="MyMod/**" />
     </ItemGroup>
     
-    <Target Name="CheckDependencyPaths" >
+    <Target Name="CheckDependencyPaths" BeforeTargets="CoreCompile">
         <Error
                 Text=" Slay the Spire 2 data not found at path '$(Sts2DataDir)'"
                 Condition="'$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)')" />
