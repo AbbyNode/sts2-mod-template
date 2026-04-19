@@ -1,0 +1,72 @@
+using System.Collections.Generic;
+using System.Linq;
+using MegaCrit.Sts2.Core.Random;
+
+namespace BaseLib.Utils;
+
+public class OptionPools
+{
+	private WeightedList<AncientOption>[] _pools;
+
+	public IEnumerable<AncientOption> AllOptions => _pools.SelectMany((WeightedList<AncientOption> pool) => pool);
+
+	/// <summary>
+	/// Constructor for an ancient's options that uses a separate pool for each option.
+	/// </summary>
+	public OptionPools(WeightedList<AncientOption> pool1, WeightedList<AncientOption> pool2, WeightedList<AncientOption> pool3)
+	{
+		_pools = new WeightedList<AncientOption>[3] { pool1, pool2, pool3 };
+	}
+
+	/// <summary>
+	/// Constructor for an ancient's options that uses one pool for its first two options and a second pool for its third option.
+	/// </summary>
+	public OptionPools(WeightedList<AncientOption> pool12, WeightedList<AncientOption> pool3)
+	{
+		_pools = new WeightedList<AncientOption>[3] { pool12, pool12, pool3 };
+	}
+
+	/// <summary>
+	/// Constructor for an ancient's options using one pool for all its options.
+	/// </summary>
+	public OptionPools(WeightedList<AncientOption> pool)
+	{
+		_pools = new WeightedList<AncientOption>[3] { pool, pool, pool };
+	}
+
+	public List<AncientOption> Roll(Rng rng)
+	{
+		List<AncientOption> list = new List<AncientOption>();
+		WeightedList<AncientOption> weightedList = _pools[0];
+		WeightedList<AncientOption> weightedList2 = new WeightedList<AncientOption>();
+		foreach (AncientOption item in weightedList)
+		{
+			weightedList2.Add(item);
+		}
+		WeightedList<AncientOption> weightedList3 = weightedList2;
+		list.Add(weightedList3.GetRandom(rng, remove: true));
+		if (weightedList != _pools[1])
+		{
+			weightedList = _pools[1];
+			weightedList2 = new WeightedList<AncientOption>();
+			foreach (AncientOption item2 in weightedList)
+			{
+				weightedList2.Add(item2);
+			}
+			weightedList3 = weightedList2;
+		}
+		list.Add(weightedList3.GetRandom(rng, remove: true));
+		if (weightedList != _pools[2])
+		{
+			weightedList = _pools[2];
+			weightedList2 = new WeightedList<AncientOption>();
+			foreach (AncientOption item3 in weightedList)
+			{
+				weightedList2.Add(item3);
+			}
+			weightedList3 = weightedList2;
+		}
+		list.Add(weightedList3.GetRandom(rng, remove: true));
+		return list;
+	}
+}
